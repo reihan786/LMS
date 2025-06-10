@@ -12,7 +12,7 @@ if (isset($_GET['delete'])) {
 }
 
 $id_user = isset($_GET['edit']) ? $_GET['edit'] : '';
-$queryEdit = mysqli_query($config, "SELECT * FROM users WHERE id='$id_users'");
+$queryEdit = mysqli_query($config, "SELECT * FROM users WHERE id='$id_user'");
 $rowedit = mysqli_fetch_assoc($queryEdit);
 
 if (isset($_POST['name'])) {
