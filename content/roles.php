@@ -38,7 +38,11 @@ if (isset($_GET['delete'])) {
                                 <tr>
                                     <td><?php echo $key += 1; ?></td>
                                     <td><?php echo $data['name']; ?></td>
-                                    <td> <a href="?page=tambah-roles&edit=<?php echo $data['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                                    <td>
+                                        <a href="?page=tambah-roles&add-role-menu=<?php
+                                                                                    echo $data['id'] ?>" class="btn btn-success">Add Role Menu</a>
+                                        <a href="?page=tambah-roles&edit=<?php
+                                                                            echo $data['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
                                         <a onclick="return confirm('Are you sure wanna delete this data??')"
                                             href="?page=roles&delete=<?php echo $data['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
                                     </td>

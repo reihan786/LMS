@@ -5,23 +5,22 @@ session_start();
 include 'config/koneksi.php';
 
 if (isset($_POST['email'])) {
-    $email = $_POST['email'];
+    $email    = $_POST['email'];
     $password = sha1($_POST['password']);
     $role = $_POST['role'];
-    $table = "";
-    //tampilkan semua data dari tabel user dimana emailnya di ambil dari
-    // orang yang input email dan password diambil dari orang yang input passsword
+    // tampilkan semua data dari tbl user dimana email diambil dari
+    // orang yg input email dan password di ambil dari orang yang input password
     // jika login dengan role instruktur
-    if ($role == 1) {
-        $queryLogin = mysqli_query($config, "SELECT * FROM instructors WHERE email='$email' AND password='$password'");
-   
-    } elseif($role == 2) {
-        
-        $queryLogin = mysqli_query($config, "SELECT * FROM students WHERE email='$email' AND password='$password'");
-   
-    
+    if ($role == 5) {
+        $queryLogin = mysqli_query($config, "SELECT * FROM instructors WHERE 
+    email='$email' AND password='$password'");
+    } elseif ($role == 4) {
+
+        $queryLogin = mysqli_query($config, "SELECT * FROM students WHERE 
+    email='$email' AND password='$password'");
     } else {
-        $queryLogin = mysqli_query($config, "SELECT * FROM users WHERE email='$email' AND password='$password'");
+        $queryLogin = mysqli_query($config, "SELECT * FROM users WHERE 
+    email='$email' AND password='$password'");
     }
     // jika data ditemukan, mysqli_num_rows("hasil query")
     if (mysqli_num_rows($queryLogin) > 0) {
@@ -31,14 +30,15 @@ if (isset($_POST['email'])) {
         $_SESSION['NAME']    = $rowLogin['name'];
         $_SESSION['ID_ROLE'] = $role;
 
-        header("Location:home.php");
+        header("location:home.php");
     } else {
-        header("Location:index.php?login=error");
+        header("location:index.php?login=error");
     }
 }
 
-
-
+$queryRoles = mysqli_query($config, "SELECT * FROM roles 
+ORDER BY id DESC");
+$rowRoles   = mysqli_fetch_all($queryRoles, MYSQLI_ASSOC);
 
 ?>
 
@@ -123,18 +123,23 @@ if (isset($_POST['email'])) {
                                             <div class="input-group has-validation">
                                                 <span class="input-group-text" id="inputGroupPrepend">@</span>
                                                 <input type="password" name="password" class="form-control" id="yourPassword" required>
-                                                <div class="invalid-feedback">Please enter your email.</div>
+                                                <div class="invalid-feedback">Please enter your password!</div>
                                             </div>
                                         </div>
 
 
                                         <div class="col-12">
                                             <label for="yourRole" class="form-label">Role *</label>
-                                            <select name="role" id="yourRole" class="form-control">
+                                            <select name="role" id="yourRole" class="form-control" required>
                                                 <option value="">Pilih Role</option>
-                                                <option value="1">Instruktur</option>
+                                                <?php foreach ($rowRoles as $role): ?>
+                                                    <option value="<?php echo $role['id'] ?>"><?php echo $role['name'] ?></option>
+                                                <?php endforeach ?>
+                                                <option value="0">Lainnya</option>
+                                            
+                                                <!-- <option value="1">Instruktur</option>
                                                 <option value="2">Siswa</option>
-                                                <option value="3">Lainnya</option>
+                                                <option value="3">Lainnya</option> -->
                                             </select>
                                             <div class="invalid-feedback">Please select your role!</div>
                                         </div>
